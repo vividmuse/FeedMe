@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:24-alpine
 
 # Update package list and install necessary packages
 # Use dcron for cron, bash for scripts, procps-ng for pkill
@@ -19,10 +19,10 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Ensure the data directory exists
-RUN mkdir -p /app/data
+RUN mkdir -p /app/public/data
 
 # Copy the crontab file to the appropriate directory
-COPY config/crontab-docker /etc/crontabs/root
+COPY src/config/crontab-docker /etc/crontabs/root
 # Apply the crontab
 RUN crontab /etc/crontabs/root
 
@@ -38,4 +38,4 @@ EXPOSE 3000
 ENTRYPOINT ["/app/scripts/entrypoint.sh"]
 
 # Remove the old CMD, as ENTRYPOINT handles the startup
-# CMD ["pnpm", "dev"] 
+# CMD ["pnpm", "dev"]
